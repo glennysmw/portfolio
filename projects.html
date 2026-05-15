@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Glenn Soe — All Projects</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <nav id="navbar" class="scrolled">
+    <a href="index.html" class="nav-logo">
+      <img src="Cover_Images/GlennSoe_LOGO.png" alt="Glenn Soe Logo">
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="index.html#projects">Projects</a></li>
+      <li><a href="index.html#skills">Skills</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <section id="projects-page">
+
+    <a href="index.html" class="back-link">← Back to Home</a>
+
+    <div class="projects-page-intro">
+      <div class="section-label">// All Projects</div>
+      <div class="section-title" style="margin-bottom:0.5rem;">Everything I've <span
+          style="color:var(--accent)">Built.</span></div>
+      <p>A full collection — from final year work and internship builds to personal experiments and games in progress.
+      </p>
+    </div>
+
+    <div class="filter-bar">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="fullstack">Full-Stack</button>
+      <button class="filter-btn" data-filter="frontend">Frontend</button>
+      <button class="filter-btn" data-filter="game">Game</button>
+      <button class="filter-btn" data-filter="api">API / Backend</button>
+    </div>
+
+    <div class="page-count"><span id="visibleCount">9</span> projects</div>
+
+    <div class="projects-page-grid" id="projectsGrid">
+
+      <div class="project-card tilt-card reveal" data-category="api fullstack">
+        <div class="project-num">01</div>
+        <div class="project-tag">Final Year Project</div>
+        <img src="Cover_Images/NextTrack_CoverImage.png" alt="NextTrack">
+        <div class="project-title">NextTrack — Privacy-First Music Recommendation API</div>
+        <div class="project-desc">A stateless RESTful API that recommends the next track from listening history — no
+          user accounts, no data stored.</div>
+        <div class="project-stack">
+          <span class="stack-pill">Python</span><span class="stack-pill">React</span>
+          <span class="stack-pill">TypeScript</span><span class="stack-pill">PostgreSQL</span>
+          <span class="stack-pill">Docker</span><span class="stack-pill">NumPy</span>
+        </div>
+        <a href="#" class="project-link">View Project <span>→</span></a>
+      </div>
+
+      <div class="project-card tilt-card reveal" data-category="frontend fullstack">
+        <div class="project-num">02</div>
+        <div class="project-tag">Interactive Prototype</div>
+        <img src="Cover_Images/BrainPet_CoverImage.png" alt="BrainPet">
+        <div class="project-title">BrainPet — Screen-Time Wellness, Reimagined as a BLOB</div>
+        <div class="project-desc">A reactive wellness app that turns phone habits into a living pet. Built with React
+          and SVG state machines, featuring a focus timer and behavior-driven emotional states.</div>
+        <div class="project-stack">
+          <span class="stack-pill">React</span><span class="stack-pill">SVG Animation</span>
+          <span class="stack-pill">ScreenTime API</span><span class="stack-pill">UI/UX Design</span>
+        </div>
+        <a href="https://brainpet-glenn.vercel.app/" target="_blank" rel="noopener noreferrer" class="project-link">View
+          Project <span>→</span></a>
+      </div>
+
+      <div class="project-card tilt-card reveal" data-category="fullstack">
+        <div class="project-num">03</div>
+        <div class="project-tag">Full-Stack App</div>
+        <div class="project-title">BlogSpace — Personal Blogging Platform</div>
+        <div class="project-desc">A minimal blogging CMS where users can create accounts, write posts with markdown
+          support, and browse other writers' content. Deployed on Vercel.</div>
+        <div class="project-stack">
+          <span class="stack-pill">Next.js</span><span class="stack-pill">Tailwind CSS</span>
+          <span class="stack-pill">Prisma</span><span class="stack-pill">PostgreSQL</span>
+        </div>
+        <a href="#" class="project-link">View Project <span>→</span></a>
+      </div>
+
+      <div class="project-card tilt-card reveal" data-category="frontend">
+        <div class="project-num">04</div>
+        <div class="project-tag">UI / Frontend</div>
+        <div class="project-title">ShopUI — E-Commerce Landing Page</div>
+        <div class="project-desc">A pixel-perfect, fully responsive e-commerce product page built from a Figma mockup.
+          Includes cart interactions, product filters, and smooth transitions.</div>
+        <div class="project-stack">
+          <span class="stack-pill">React</span><span class="stack-pill">Tailwind CSS</span>
+          <span class="stack-pill">Framer Motion</span>
+        </div>
+        <a href="#" class="project-link">View Project <span>→</span></a>
+      </div>
+
+      <div class="project-card tilt-card reveal" data-category="fullstack api">
+        <div class="project-num">05</div>
+        <div class="project-tag">Internship Project</div>
+        <div class="project-title">Admin Dashboard — Internal Operations Tool</div>
+        <div class="project-desc">Developed during a 6-month internship — a data dashboard for internal operations
+          tracking with charts, filters, and CSV export functionality.</div>
+        <div class="project-stack">
+          <span class="stack-pill">Vue.js</span><span class="stack-pill">Chart.js</span>
+          <span class="stack-pill">Express</span><span class="stack-pill">MySQL</span>
+        </div>
+        <a href="#" class="project-link">View Project <span>→</span></a>
+      </div>
+
+      <div class="project-card tilt-card reveal" data-category="game">
+        <div class="project-num">06</div>
+        <div class="project-tag">Work in Progress — HTML5 Game</div>
+        <img src="Cover_Images/Operation_Blacksite_CoverImage.png" alt="Operation BlackSite">
+        <div class="project-title">Operation BlackSite</div>
+        <div class="project-desc">A free-to-play, tactical, objective-based first-person shooter where teams battle to
+          plant, defuse, or eliminate enemies in tense, clutch-driven rounds.</div>
+        <div class="project-stack">
+          <span class="stack-pill">HTML</span><span class="stack-pill">CSS</span>
+          <span class="stack-pill">JavaScript</span><span class="stack-pill">WebGL</span>
+        </div>
+        <a href="https://glennyboii.itch.io/operation-blacksite" target="_blank" rel="noopener noreferrer"
+          class="project-link">View Project <span>→</span></a>
+      </div>
+
+      <div class="project-card tilt-card reveal" data-category="frontend">
+        <div class="project-num">07</div>
+        <div class="project-tag">Side Project</div>
+        <div class="project-title">DevLinks — Link-in-Bio Tool</div>
+        <div class="project-desc">A customisable link-in-bio page builder inspired by Linktree. Users can create a
+          profile, add links, and share a public page — built and deployed solo.</div>
+        <div class="project-stack">
+          <span class="stack-pill">React</span><span class="stack-pill">Firebase</span>
+          <span class="stack-pill">CSS Modules</span>
+        </div>
+        <a href="#" class="project-link">View Project <span>→</span></a>
+      </div>
+
+      <div class="project-card tilt-card reveal" data-category="api">
+        <div class="project-num">08</div>
+        <div class="project-tag">API & Backend</div>
+        <div class="project-title">SwiftRoute — Logistics Microservice</div>
+        <div class="project-desc">High-performance REST + GraphQL API handling real-time tracking for a logistics
+          workflow, with Redis caching and Docker deployment.</div>
+        <div class="project-stack">
+          <span class="stack-pill">Node.js</span><span class="stack-pill">GraphQL</span>
+          <span class="stack-pill">Redis</span><span class="stack-pill">Docker</span>
+        </div>
+        <a href="#" class="project-link">View Project <span>→</span></a>
+      </div>
+
+      <div class="project-card tilt-card reveal" data-category="fullstack frontend">
+        <div class="project-num">09</div>
+        <div class="project-tag">AI / ML Side Project</div>
+        <div class="project-title">Palette — AI Design Assistant</div>
+        <div class="project-desc">Generate color palettes and UI themes from natural language prompts. A lightweight
+          tool for designers and developers to explore visual direction quickly.</div>
+        <div class="project-stack">
+          <span class="stack-pill">TypeScript</span><span class="stack-pill">Next.js</span>
+          <span class="stack-pill">OpenAI API</span><span class="stack-pill">Vercel</span>
+        </div>
+        <a href="#" class="project-link">View Project <span>→</span></a>
+      </div>
+
+    </div>
+  </section>
+
+  <a href="resume.html" class="resume-fab" title="View Resume">Resume ↗</a>
+
+  <footer>
+    <p>© 2026 <span>Glenn Soe</span>. Designed &amp; built by me.</p>
+    <p><a href="index.html" style="color:var(--muted);text-decoration:none;transition:color 0.2s"
+        onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--muted)'">← Back to
+        Portfolio</a></p>
+  </footer>
+
+  <script src="projects.js"></script>
+</body>
+
+</html>
