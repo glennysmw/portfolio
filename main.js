@@ -64,6 +64,7 @@ window.scrollTo(0, 0);
 function initPostLoad() {
   initCursor();
   initNavbar();
+  initMobileMenu();
   initSplitTitles();
   initReveal();
   initCounters();
@@ -74,11 +75,43 @@ function initPostLoad() {
 }
 
 /* ============================================================
+   MOBILE MENU (hamburger)
+   ============================================================ */
+function initMobileMenu() {
+  const toggle = document.getElementById('navToggle');
+  const menu = document.getElementById('mobileMenu');
+  if (!toggle || !menu) return;
+
+  function close() {
+    toggle.classList.remove('open');
+    menu.classList.remove('open');
+    document.body.classList.remove('menu-open');
+  }
+
+  toggle.addEventListener('click', () => {
+    const isOpen = menu.classList.toggle('open');
+    toggle.classList.toggle('open', isOpen);
+    document.body.classList.toggle('menu-open', isOpen);
+  });
+
+  // Close when a link is tapped
+  menu.querySelectorAll('a').forEach(a => a.addEventListener('click', close));
+}
+
+/* ============================================================
    CUSTOM CURSOR
    ============================================================ */
 function initCursor() {
   const cursor = document.getElementById('cursor');
   const ring = document.getElementById('cursorRing');
+
+  // On touch devices, hide the custom cursor and bail out
+  const isTouch = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+  if (isTouch) {
+    if (cursor) cursor.style.display = 'none';
+    if (ring) ring.style.display = 'none';
+    return;
+  }
 
   let mx = 0,
     my = 0;
@@ -454,14 +487,19 @@ function initParallax() {
 
   typeStep();
 
-  // ── Mouse parallax ───────────────────────────────────────
-  document.addEventListener('mousemove', e => {
-    const x = (e.clientX / window.innerWidth - 0.5) * 80;
-    const y = (e.clientY / window.innerHeight - 0.5) * 30;
-    bgText.style.transform = `translateY(calc(-50% + ${y}px)) translateX(${x}px)`;
-  }, {
-    passive: true
-  });
+  // ── Mouse parallax (skip on touch / small screens) ───────
+  const isTouch = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+  if (!isTouch) {
+    document.addEventListener('mousemove', e => {
+      // Scale movement to viewport so text never overflows
+      const intensity = Math.min(window.innerWidth / 1920, 1);
+      const x = (e.clientX / window.innerWidth - 0.5) * 50 * intensity;
+      const y = (e.clientY / window.innerHeight - 0.5) * 24 * intensity;
+      bgText.style.transform = `translateY(calc(-50% + ${y}px)) translateX(${x}px)`;
+    }, {
+      passive: true
+    });
+  }
 }
 
 /* ============================================================

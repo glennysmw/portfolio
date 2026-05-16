@@ -26,7 +26,18 @@
       <li><a href="index.html#skills">Skills</a></li>
       <li><a href="index.html#contact">Contact</a></li>
     </ul>
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
   </nav>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html#about">About</a>
+    <a href="index.html#projects">Projects</a>
+    <a href="index.html#skills">Skills</a>
+    <a href="index.html#contact">Contact</a>
+    <a href="resume.html" class="mobile-menu-resume">Resume ↗</a>
+  </div>
 
   <section id="projects-page">
 
@@ -187,7 +198,26 @@
         Portfolio</a></p>
   </footer>
 
-  <script src="projects.js"></script>
+  <script src="projects.js">
+    // Mobile menu toggle
+    (function () {
+      var t = document.getElementById('navToggle'),
+        m = document.getElementById('mobileMenu');
+      if (!t || !m) return;
+      t.addEventListener('click', function () {
+        var o = m.classList.toggle('open');
+        t.classList.toggle('open', o);
+        document.body.classList.toggle('menu-open', o);
+      });
+      m.querySelectorAll('a').forEach(function (a) {
+        a.addEventListener('click', function () {
+          t.classList.remove('open');
+          m.classList.remove('open');
+          document.body.classList.remove('menu-open');
+        });
+      });
+    })();
+  </script>
 </body>
 
 </html>

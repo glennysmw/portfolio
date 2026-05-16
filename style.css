@@ -202,7 +202,7 @@ nav.scrolled {
 }
 
 .nav-logo img {
-    height: 150px;
+    height: clamp(70px, 7vw, 110px);
     width: auto;
     display: block;
     transition: opacity 0.2s;
@@ -328,18 +328,23 @@ nav.scrolled {
 .hero-bg-text {
     position: absolute;
     top: 35%;
-    left: -0.01em;
+    left: 0;
+    right: 0;
     transform: translateY(-50%);
     font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(12rem, 22vw, 22rem);
+    /* Sized so the longest phrase ("FULL-STACK DEVELOPER") always fits viewport width */
+    font-size: clamp(2.2rem, 11.5vw, 17rem);
     color: transparent;
     -webkit-text-stroke: 3px #ffffff5b;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: clip;
     pointer-events: none;
     user-select: none;
     letter-spacing: -0.02em;
     text-transform: uppercase;
     will-change: transform;
+    padding-left: 0.05em;
     /* Blinking caret — CSS-tricks style */
     border-right: 6px solid #555;
     animation: blink-caret 0.72s step-end infinite;
@@ -1581,5 +1586,214 @@ footer p span {
 
     .projects-page-grid {
         grid-template-columns: 1fr;
+    }
+}
+
+/* ============================================================
+   MOBILE NAV — HAMBURGER + SLIDE MENU
+   ============================================================ */
+.nav-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 42px;
+    height: 42px;
+    background: none;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    padding: 0 9px;
+    z-index: 1002;
+}
+
+.nav-toggle span {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background: var(--white);
+    transition: transform 0.3s ease, opacity 0.2s ease;
+}
+
+.nav-toggle.open span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+}
+
+.nav-toggle.open span:nth-child(2) {
+    opacity: 0;
+}
+
+.nav-toggle.open span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+}
+
+.mobile-menu {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 10, 10, 0.98);
+    backdrop-filter: blur(20px);
+    z-index: 1001;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-12px);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.mobile-menu.open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+.mobile-menu a {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.4rem;
+    letter-spacing: 0.04em;
+    color: var(--white);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.2s;
+}
+
+.mobile-menu a:hover {
+    color: var(--accent);
+}
+
+.mobile-menu-resume {
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 0.95rem !important;
+    letter-spacing: 0.14em !important;
+    color: var(--accent) !important;
+    border: 1px solid var(--accent);
+    padding: 0.8rem 2rem;
+    margin-top: 1rem;
+}
+
+body.menu-open {
+    overflow: hidden;
+}
+
+/* ============================================================
+   TOUCH DEVICES — remove custom cursor, restore default
+   ============================================================ */
+@media (hover: none) and (pointer: coarse) {
+    * {
+        cursor: auto !important;
+    }
+
+    .cursor,
+    .cursor-ring {
+        display: none !important;
+    }
+
+    a,
+    button,
+    .skill-tab,
+    .project-link,
+    .btn-primary,
+    .btn-send,
+    .resume-fab,
+    .nav-toggle,
+    input,
+    textarea {
+        cursor: pointer !important;
+    }
+
+    input,
+    textarea {
+        cursor: text !important;
+    }
+}
+
+/* ============================================================
+   SHOW HAMBURGER + LIMIT PROJECTS ON MOBILE
+   ============================================================ */
+@media (max-width: 900px) {
+    .nav-toggle {
+        display: flex;
+    }
+
+    .nav-links {
+        display: none;
+    }
+
+    /* Show only the 3 .mobile-featured project cards */
+    .projects-grid .project-card:not(.mobile-featured) {
+        display: none;
+    }
+}
+
+/* ============================================================
+   EXTRA MOBILE UI/UX POLISH
+   ============================================================ */
+@media (max-width: 600px) {
+    .nav-logo img {
+        height: 92px;
+    }
+
+    nav {
+        padding: 0.8rem 1.2rem;
+    }
+
+    .hero-tag {
+        font-size: 0.62rem;
+        letter-spacing: 0.1em;
+        line-height: 1.6;
+    }
+
+    .hero-bg-text {
+        top: 30%;
+        -webkit-text-stroke-width: 2px;
+    }
+
+    .hero-sub {
+        font-size: 0.9rem;
+        line-height: 1.7;
+    }
+
+    .btn-primary {
+        padding: 0.85rem 2rem;
+        font-size: 0.82rem;
+    }
+
+    .section-label {
+        font-size: 0.66rem;
+    }
+
+    .project-card img {
+        margin-bottom: 1rem;
+    }
+
+    .resume-fab {
+        bottom: 1.2rem;
+        right: 1.2rem;
+        font-size: 0.66rem;
+        padding: 0.6rem 1.1rem;
+    }
+
+    .marquee-inner span {
+        font-size: 0.7rem;
+    }
+
+    footer p {
+        font-size: 0.66rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .nav-logo img {
+        height: 76px;
+    }
+
+    .hero-name {
+        font-size: clamp(3rem, 16vw, 5rem);
+    }
+
+    .mobile-menu a {
+        font-size: 2rem;
     }
 }
