@@ -149,17 +149,8 @@ function initCursor() {
    ============================================================ */
 function initNavbar() {
   const nav = document.getElementById('navbar');
-  const hero = document.getElementById('hero');
-
   window.addEventListener('scroll', () => {
-    const y = window.scrollY;
-    nav.classList.toggle('scrolled', y > 40);
-
-    // Fade the navbar once we've scrolled past the hero section
-    if (hero) {
-      const heroBottom = hero.offsetHeight * 0.85;
-      nav.classList.toggle('nav-faded', y > heroBottom);
-    }
+    nav.classList.toggle('scrolled', window.scrollY > 40);
   }, {
     passive: true
   });
