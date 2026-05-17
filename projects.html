@@ -200,24 +200,22 @@
 
   <script src="projects.js">
     // Mobile menu toggle
-    (function () {
-      var t = document.getElementById('navToggle'),
-        m = document.getElementById('mobileMenu');
-      if (!t || !m) return;
-      t.addEventListener('click', function () {
-        var o = m.classList.toggle('open');
-        t.classList.toggle('open', o);
-        document.body.classList.toggle('menu-open', o);
+    (function(){
+      var t=document.getElementById('navToggle'), m=document.getElementById('mobileMenu');
+      if(!t||!m) return;
+      t.addEventListener('click',function(){
+        var o=m.classList.toggle('open');
+        t.classList.toggle('open',o);
+        document.body.classList.toggle('menu-open',o);
       });
-      m.querySelectorAll('a').forEach(function (a) {
-        a.addEventListener('click', function () {
-          t.classList.remove('open');
-          m.classList.remove('open');
+      m.querySelectorAll('a').forEach(function(a){
+        a.addEventListener('click',function(){
+          t.classList.remove('open'); m.classList.remove('open');
           document.body.classList.remove('menu-open');
         });
       });
     })();
-  </script>
+</script>
 </body>
 
 </html>

@@ -79,7 +79,7 @@ function initPostLoad() {
    ============================================================ */
 function initMobileMenu() {
   const toggle = document.getElementById('navToggle');
-  const menu = document.getElementById('mobileMenu');
+  const menu   = document.getElementById('mobileMenu');
   if (!toggle || !menu) return;
 
   function close() {
