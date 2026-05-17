@@ -79,7 +79,8 @@ function initPostLoad() {
    ============================================================ */
 function initMobileMenu() {
   const toggle = document.getElementById('navToggle');
-  const menu   = document.getElementById('mobileMenu');
+  const menu = document.getElementById('mobileMenu');
+  const closeBtn = document.getElementById('mobileMenuClose');
   if (!toggle || !menu) return;
 
   function close() {
@@ -93,6 +94,8 @@ function initMobileMenu() {
     toggle.classList.toggle('open', isOpen);
     document.body.classList.toggle('menu-open', isOpen);
   });
+
+  if (closeBtn) closeBtn.addEventListener('click', close);
 
   // Close when a link is tapped
   menu.querySelectorAll('a').forEach(a => a.addEventListener('click', close));
@@ -146,8 +149,17 @@ function initCursor() {
    ============================================================ */
 function initNavbar() {
   const nav = document.getElementById('navbar');
+  const hero = document.getElementById('hero');
+
   window.addEventListener('scroll', () => {
-    nav.classList.toggle('scrolled', window.scrollY > 40);
+    const y = window.scrollY;
+    nav.classList.toggle('scrolled', y > 40);
+
+    // Fade the navbar once we've scrolled past the hero section
+    if (hero) {
+      const heroBottom = hero.offsetHeight * 0.85;
+      nav.classList.toggle('nav-faded', y > heroBottom);
+    }
   }, {
     passive: true
   });

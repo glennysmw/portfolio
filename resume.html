@@ -24,7 +24,20 @@
             <li><a href="index.html#skills">Skills</a></li>
             <li><a href="index.html#contact">Contact</a></li>
         </ul>
+        <button class="nav-toggle" id="navToggle" aria-label="Open menu">
+            <span></span><span></span><span></span>
+        </button>
     </nav>
+
+    <!-- MOBILE MENU -->
+    <div class="mobile-menu" id="mobileMenu">
+        <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close menu">&times;</button>
+        <a href="index.html#about">About</a>
+        <a href="index.html#projects">Projects</a>
+        <a href="index.html#skills">Skills</a>
+        <a href="index.html#contact">Contact</a>
+        <a href="resume.html" class="mobile-menu-resume">Resume ↗</a>
+    </div>
 
     <section id="resume-page">
 
@@ -245,6 +258,30 @@
                     ring.style.width = '36px';
                     ring.style.height = '36px';
                 });
+            });
+        })();
+    </script>
+
+    <script>
+        (function () {
+            var t = document.getElementById('navToggle'),
+                m = document.getElementById('mobileMenu'),
+                x = document.getElementById('mobileMenuClose');
+            if (!t || !m) return;
+
+            function close() {
+                t.classList.remove('open');
+                m.classList.remove('open');
+                document.body.classList.remove('menu-open');
+            }
+            t.addEventListener('click', function () {
+                var o = m.classList.toggle('open');
+                t.classList.toggle('open', o);
+                document.body.classList.toggle('menu-open', o);
+            });
+            if (x) x.addEventListener('click', close);
+            m.querySelectorAll('a').forEach(function (a) {
+                a.addEventListener('click', close);
             });
         })();
     </script>

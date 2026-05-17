@@ -32,6 +32,7 @@
   </nav>
 
   <div class="mobile-menu" id="mobileMenu">
+    <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close menu">&times;</button>
     <a href="index.html#about">About</a>
     <a href="index.html#projects">Projects</a>
     <a href="index.html#skills">Skills</a>
@@ -200,22 +201,30 @@
 
   <script src="projects.js">
     // Mobile menu toggle
-    (function(){
-      var t=document.getElementById('navToggle'), m=document.getElementById('mobileMenu');
-      if(!t||!m) return;
-      t.addEventListener('click',function(){
-        var o=m.classList.toggle('open');
-        t.classList.toggle('open',o);
-        document.body.classList.toggle('menu-open',o);
+    (function () {
+      var t = document.getElementById('navToggle'),
+        m = document.getElementById('mobileMenu'),
+        x = document.getElementById('mobileMenuClose');
+      if (!t || !m) return;
+      t.addEventListener('click', function () {
+        var o = m.classList.toggle('open');
+        t.classList.toggle('open', o);
+        document.body.classList.toggle('menu-open', o);
       });
-      m.querySelectorAll('a').forEach(function(a){
-        a.addEventListener('click',function(){
-          t.classList.remove('open'); m.classList.remove('open');
+      if (x) x.addEventListener('click', function () {
+        t.classList.remove('open');
+        m.classList.remove('open');
+        document.body.classList.remove('menu-open');
+      });
+      m.querySelectorAll('a').forEach(function (a) {
+        a.addEventListener('click', function () {
+          t.classList.remove('open');
+          m.classList.remove('open');
           document.body.classList.remove('menu-open');
         });
       });
     })();
-</script>
+  </script>
 </body>
 
 </html>
