@@ -1432,3 +1432,206 @@ html:not(.js) .char-reveal .char {
         font-size: var(--text-micro);
     }
 }
+
+/* ============================================================
+   CONTACT — editorial pitch + underline-only form
+   ============================================================ */
+#contact {
+    position: relative;
+    overflow: hidden;
+    background: var(--color-paper);
+    padding: var(--space-120) var(--gutter);
+}
+
+.contact-header {
+    position: relative;
+    z-index: 1;
+    margin-bottom: var(--space-72);
+}
+
+.contact-header .section-title {
+    max-width: 16ch;
+}
+
+.contact-wrapper {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 40fr 60fr;
+    gap: var(--space-96);
+    align-items: start;
+}
+
+.contact-left p {
+    max-width: 460px;
+    font-size: var(--text-body);
+    line-height: 1.35;
+    color: var(--color-stone);
+}
+
+.contact-links {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+    margin-top: var(--space-48);
+}
+
+.contact-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-12);
+    width: fit-content;
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: var(--text-caption);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    color: var(--color-graphite);
+    border-bottom: 1px solid transparent;
+    padding-bottom: 2px;
+    transition: border-color var(--dur-micro) var(--ease-in);
+}
+
+.contact-link:hover {
+    border-bottom-color: var(--color-graphite);
+}
+
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-24);
+    align-items: flex-start;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    width: 100%;
+}
+
+.form-group label {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: var(--text-micro);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-stone);
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    border: 0;
+    border-bottom: 1px solid var(--color-silver-mist);
+    border-radius: var(--radius-inputs);
+    background: transparent;
+    padding: var(--space-12) 0;
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: var(--text-body);
+    color: var(--color-graphite);
+    outline: none;
+    resize: none;
+    transition: border-color var(--dur-micro) var(--ease-in);
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-bottom-color: var(--color-graphite);
+}
+
+.form-group textarea {
+    min-height: 120px;
+}
+
+@media (max-width: 1024px) {
+    .contact-wrapper {
+        grid-template-columns: 1fr;
+        gap: var(--space-60);
+    }
+}
+
+@media (max-width: 900px) {
+    #contact {
+        padding: var(--space-72) var(--gutter);
+    }
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: center;
+    gap: var(--space-24);
+    padding: var(--space-48);
+    background: var(--color-onyx);
+}
+
+footer p {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: var(--text-micro);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-ash);
+}
+
+.footer-status {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-6);
+    color: var(--color-pure-white);
+}
+
+.footer-center {
+    text-align: center;
+}
+
+.footer-right {
+    text-align: right;
+}
+
+@media (max-width: 900px) {
+    footer {
+        grid-template-columns: 1fr;
+        justify-items: start;
+        gap: var(--space-12);
+        padding: var(--space-24);
+    }
+
+    .footer-center,
+    .footer-right {
+        text-align: left;
+    }
+}
+
+/* ============================================================
+   FLOATING RESUME BUTTON
+   ============================================================ */
+.resume-fab {
+    position: fixed;
+    right: var(--space-24);
+    bottom: var(--space-24);
+    z-index: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-6);
+    padding: 12px 22px;
+    border-radius: var(--radius-buttons);
+    background: var(--color-graphite);
+    color: var(--color-pure-white);
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: var(--text-caption);
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    transition: background var(--dur-micro) var(--ease-in);
+}
+
+.resume-fab:hover {
+    background: var(--color-onyx);
+}

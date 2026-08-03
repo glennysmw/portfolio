@@ -656,12 +656,11 @@ function handleSend(btn) {
   btn.disabled = true;
 
   setTimeout(() => {
+    // Confirmation reads through copy, not colour — the palette stays monochrome
     btn.textContent = '✓ Message Sent!';
-    btn.style.background = '#22c55e';
 
     setTimeout(() => {
-      btn.textContent = 'Send Message';
-      btn.style.background = '';
+      btn.textContent = 'Send Message →';
       btn.disabled = false;
     }, 3000);
   }, 1200);

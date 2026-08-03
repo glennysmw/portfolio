@@ -617,42 +617,44 @@
 
   <!-- CONTACT -->
   <section id="contact">
-    <div class="section-label">// 04 — Contact</div>
-    <div class="section-title split-title reveal">Let's Connect</div>
+    <span class="ghost-title" aria-hidden="true">Contact</span>
+
+    <div class="contact-header">
+      <span class="section-num">// 04 — Reach out</span>
+      <h2 class="section-title split-title">Looking for a junior Software Engineer?</h2>
+    </div>
+
     <div class="contact-wrapper">
       <div class="contact-left reveal">
-        <h3>Looking for a junior<br>Software Engineer?</h3>
         <p>I'm actively seeking my first full-time web developer role. Whether it's an internship, a junior position,
           or a freelance gig — I'd love to hear from you. Let's build something great together!</p>
         <div class="contact-links">
           <a href="mailto:gsjzd123@gmail.com" class="contact-link">
-            <div class="link-icon">✉</div>
-            glennsoemw@gmail.com
+            <span class="ember-dot"></span>glennsoemw@gmail.com
           </a>
-          <a href="https://github.com/glennysmw" target="_blank" class="contact-link">
-            <div class="link-icon">⌥</div>
-            github.com/glennysmw
+          <a href="https://github.com/glennysmw" target="_blank" rel="noopener noreferrer" class="contact-link">
+            <span class="ember-dot"></span>github.com/glennysmw
           </a>
-          <a href="https://www.linkedin.com/in/glennsoe" target="_blank" class="contact-link">
-            <div class="link-icon">in</div>
-            linkedin.com/in/glennsoe
+          <a href="https://www.linkedin.com/in/glennsoe" target="_blank" rel="noopener noreferrer"
+            class="contact-link">
+            <span class="ember-dot"></span>linkedin.com/in/glennsoe
           </a>
         </div>
       </div>
       <div class="contact-form reveal">
         <div class="form-group">
-          <label>Your Name</label>
-          <input type="text" placeholder="Jane Smith" />
+          <label for="contactName">Your Name</label>
+          <input id="contactName" name="name" type="text" autocomplete="name" />
         </div>
         <div class="form-group">
-          <label>Email Address</label>
-          <input type="email" placeholder="jane@company.com" />
+          <label for="contactEmail">Email Address</label>
+          <input id="contactEmail" name="email" type="email" autocomplete="email" />
         </div>
         <div class="form-group">
-          <label>Message</label>
-          <textarea placeholder="Tell me about the role or opportunity..."></textarea>
+          <label for="contactMessage">Message</label>
+          <textarea id="contactMessage" name="message"></textarea>
         </div>
-        <button class="btn-send magnetic" onclick="handleSend(this)">Send Message</button>
+        <button class="btn-send magnetic" onclick="handleSend(this)">Send Message →</button>
       </div>
     </div>
   </section>
