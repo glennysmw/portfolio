@@ -61,17 +61,70 @@ window.scrollTo(0, 0);
 /* ============================================================
    POST-LOAD INIT — everything after the loader finishes
    ============================================================ */
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const hasGSAP = typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined';
+
 function initPostLoad() {
+  initSmoothScroll();
   initCursor();
   initNavbar();
   initMobileMenu();
   initSplitTitles();
   initReveal();
+  initHero();
   initCounters();
   initTiltCards();
   initMagnetic();
   initSkillTabs();
-  initParallax();
+}
+
+/* ============================================================
+   SMOOTH SCROLL (Lenis) + ScrollTrigger wiring
+   ============================================================ */
+function initSmoothScroll() {
+  if (hasGSAP) gsap.registerPlugin(ScrollTrigger);
+
+  // Reduced motion keeps native scrolling
+  if (prefersReducedMotion || typeof Lenis === 'undefined') return;
+
+  const lenis = new Lenis({
+    lerp: 0.1,
+    smoothWheel: true
+  });
+
+  function raf(t) {
+    lenis.raf(t);
+    requestAnimationFrame(raf);
+  }
+  requestAnimationFrame(raf);
+
+  if (hasGSAP) lenis.on('scroll', ScrollTrigger.update);
+}
+
+/* ============================================================
+   HERO ENTRANCE — cinematic staggered build-up
+   ============================================================ */
+function initHero() {
+  const hero = document.getElementById('hero');
+  if (!hero || !hasGSAP || prefersReducedMotion) return;
+
+  const meta = hero.querySelector('.hero-meta');
+  const name = hero.querySelector('.hero-name');
+  const sub = hero.querySelector('.hero-sub');
+  const ctas = hero.querySelectorAll('.hero-cta > *');
+  const scroll = hero.querySelector('.hero-scroll');
+
+  // clearProps hands the element back to CSS once it lands, so the
+  // magnetic transition is not left fighting a leftover inline transform
+  const base = { ease: 'expo.out', clearProps: 'all' };
+
+  if (meta) gsap.from(meta, { ...base, y: -20, opacity: 0, duration: 0.6 });
+  if (name) gsap.from(name, { ...base, y: 60, opacity: 0, duration: 0.9, delay: 0.15 });
+  if (sub) gsap.from(sub, { ...base, y: 20, opacity: 0, duration: 0.6, delay: 0.5 });
+  if (ctas.length) {
+    gsap.from(ctas, { ...base, y: 20, opacity: 0, duration: 0.5, delay: 0.7, stagger: 0.1 });
+  }
+  if (scroll) gsap.from(scroll, { ...base, opacity: 0, duration: 0.6, delay: 1 });
 }
 
 /* ============================================================
@@ -442,67 +495,6 @@ function initSkillTabs() {
       });
     });
   });
-}
-
-/* ============================================================
-   HERO BG TEXT — TYPEWRITER + MOUSE PARALLAX
-   ============================================================ */
-function initParallax() {
-  const bgText = document.getElementById('heroBgText');
-  if (!bgText) return;
-
-  // ── Typewriter ──────────────────────────────────────────
-  const PHRASES = ['SOFTWARE ENGINEER', 'FULL-STACK DEVELOPER'];
-  const TYPE_SPEED = 80; // ms per character typed
-  const DELETE_SPEED = 38; // ms per character deleted
-  const PAUSE_END = 2200; // pause after fully typed
-  const PAUSE_EMPTY = 480; // pause before typing next phrase
-
-  let phraseIdx = 0;
-  let charIdx = 0;
-  let deleting = false;
-
-  bgText.textContent = '';
-
-  function typeStep() {
-    const phrase = PHRASES[phraseIdx];
-
-    if (!deleting) {
-      charIdx++;
-      bgText.textContent = phrase.slice(0, charIdx);
-      if (charIdx === phrase.length) {
-        deleting = true;
-        setTimeout(typeStep, PAUSE_END);
-        return;
-      }
-    } else {
-      charIdx--;
-      bgText.textContent = phrase.slice(0, charIdx);
-      if (charIdx === 0) {
-        deleting = false;
-        phraseIdx = (phraseIdx + 1) % PHRASES.length;
-        setTimeout(typeStep, PAUSE_EMPTY);
-        return;
-      }
-    }
-    setTimeout(typeStep, deleting ? DELETE_SPEED : TYPE_SPEED);
-  }
-
-  typeStep();
-
-  // ── Mouse parallax (skip on touch / small screens) ───────
-  const isTouch = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
-  if (!isTouch) {
-    document.addEventListener('mousemove', e => {
-      // Scale movement to viewport so text never overflows
-      const intensity = Math.min(window.innerWidth / 1920, 1);
-      const x = (e.clientX / window.innerWidth - 0.5) * 50 * intensity;
-      const y = (e.clientY / window.innerHeight - 0.5) * 24 * intensity;
-      bgText.style.transform = `translateY(calc(-50% + ${y}px)) translateX(${x}px)`;
-    }, {
-      passive: true
-    });
-  }
 }
 
 /* ============================================================
