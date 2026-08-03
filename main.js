@@ -292,7 +292,8 @@ function initSplitTitles() {
         idx++;
       }
       html += '</span>';
-      if (w < words.length - 1) html += '<span class="char-space"> </span>';
+      // A plain space, not an inline-block, so a wrapped line has no indent
+      if (w < words.length - 1) html += ' ';
     });
 
     el.innerHTML = html;

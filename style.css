@@ -587,6 +587,25 @@ body.at-hero .cursor {
     gap: var(--space-12);
 }
 
+/* Over light content the nav needs separation from the copy beneath it.
+   Per DESIGN.md that is backdrop blur, not a solid bar — and it lifts
+   away entirely while the nav floats on the hero. */
+#navbar::before {
+    content: '';
+    position: absolute;
+    inset: calc(var(--space-24) * -1) calc(var(--space-24) * -1) calc(var(--space-12) * -1);
+    z-index: -1;
+    background: rgba(248, 248, 248, 0.72);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border-bottom: 1px solid var(--color-silver-mist);
+    transition: opacity var(--dur-micro) var(--ease-in);
+}
+
+body.at-hero #navbar::before {
+    opacity: 0;
+}
+
 .nav-logo {
     display: flex;
     align-items: center;
@@ -1104,7 +1123,7 @@ html:not(.js) .char-reveal .char {
     position: relative;
 }
 
-.project-card {
+.sticky-stack .project-card {
     position: sticky;
     top: var(--space-96);
     min-height: calc(100vh - var(--space-96));
@@ -1200,9 +1219,12 @@ html:not(.js) .char-reveal .char {
     color: var(--color-pure-white);
 }
 
-.project-media {
+.sticky-stack .project-media {
     flex: 1;
     min-height: 220px;
+}
+
+.project-media {
     overflow: hidden;
     background: var(--color-fog);
 }
@@ -1239,7 +1261,7 @@ html:not(.js) .char-reveal .char {
     }
 
     /* Stacking is a desktop conceit — cards simply flow on small screens */
-    .project-card {
+    .sticky-stack .project-card {
         position: static;
         min-height: 0;
         gap: var(--space-24);
@@ -1247,7 +1269,7 @@ html:not(.js) .char-reveal .char {
         transform: none !important;
     }
 
-    .project-card+.project-card {
+    .sticky-stack .project-card+.project-card {
         margin-top: var(--space-24);
     }
 
@@ -1256,7 +1278,7 @@ html:not(.js) .char-reveal .char {
         gap: var(--space-18);
     }
 
-    .project-media {
+    .sticky-stack .project-media {
         min-height: 0;
         aspect-ratio: 16 / 9;
     }
@@ -1635,4 +1657,177 @@ footer p {
 
 .resume-fab:hover {
     background: var(--color-onyx);
+}
+
+/* ============================================================
+   PROJECTS PAGE (projects.html)
+   ============================================================ */
+#projects-page {
+    min-height: 100vh;
+    padding: var(--space-120) var(--gutter) var(--space-96);
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-6);
+    margin-bottom: var(--space-48);
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: var(--text-micro);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-stone);
+    border-bottom: 1px solid transparent;
+    padding-bottom: 2px;
+    transition: color var(--dur-micro) var(--ease-in),
+        border-color var(--dur-micro) var(--ease-in);
+}
+
+.back-link:hover {
+    color: var(--color-graphite);
+    border-bottom-color: var(--color-graphite);
+}
+
+.projects-page-intro {
+    margin-bottom: var(--space-60);
+}
+
+.projects-page-intro p {
+    max-width: 520px;
+    margin-top: var(--space-24);
+    font-size: var(--text-body);
+    line-height: 1.35;
+    color: var(--color-stone);
+}
+
+.filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-6);
+    margin-bottom: var(--space-24);
+}
+
+.filter-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-6);
+    padding: 7px 14px;
+    background: transparent;
+    border: 1px solid rgba(60, 58, 62, 0.15);
+    border-radius: var(--radius-nav);
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: var(--text-caption);
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    color: var(--color-graphite);
+    transition: background var(--dur-micro) var(--ease-in),
+        color var(--dur-micro) var(--ease-in),
+        border-color var(--dur-micro) var(--ease-in);
+}
+
+.filter-btn:hover {
+    background: rgba(60, 58, 62, 0.06);
+}
+
+.filter-btn.active {
+    background: var(--color-onyx);
+    border-color: var(--color-onyx);
+    color: var(--color-pure-white);
+}
+
+.filter-btn.active::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-ember-orange);
+}
+
+.page-count {
+    margin-bottom: var(--space-24);
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: var(--text-micro);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-stone);
+}
+
+.projects-page-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-24);
+}
+
+.projects-page-grid .project-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-12);
+    background: var(--color-pure-white);
+    border: 1px solid var(--color-silver-mist);
+    border-radius: var(--radius-cards);
+    padding: var(--space-24);
+}
+
+/* display:flex above would otherwise beat the UA [hidden] rule */
+.projects-page-grid .project-card[hidden] {
+    display: none;
+}
+
+.projects-page-grid .project-num {
+    font-size: var(--text-heading-sm);
+    line-height: 1;
+    color: var(--color-silver-mist);
+}
+
+.projects-page-grid .project-title {
+    font-size: var(--text-subheading);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+}
+
+.projects-page-grid .project-desc {
+    font-size: var(--text-body-sm);
+    line-height: 1.4;
+}
+
+.projects-page-grid .project-media {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+}
+
+.projects-page-grid .project-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--dur-micro) var(--ease-in);
+}
+
+/* Depth comes from the lift alone — no shadow */
+.projects-page-grid .project-card:hover .project-media img {
+    transform: translateY(-6px);
+}
+
+.projects-page-grid .project-link {
+    margin-top: auto;
+}
+
+@media (max-width: 1200px) {
+    .projects-page-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    #projects-page {
+        padding: var(--space-96) var(--gutter) var(--space-72);
+    }
+
+    .projects-page-grid {
+        grid-template-columns: 1fr;
+    }
 }

@@ -1,94 +1,151 @@
-// Cursor
-const cursor = document.getElementById('cursor');
-const ring = document.getElementById('cursorRing');
-document.addEventListener('mousemove', e => {
-    cursor.style.left = e.clientX + 'px';
-    cursor.style.top = e.clientY + 'px';
-    ring.style.left = e.clientX + 'px';
-    ring.style.top = e.clientY + 'px';
-});
-document.querySelectorAll('a, button, .project-card').forEach(el => {
-    el.addEventListener('mouseenter', () => {
-        cursor.style.width = '20px';
-        cursor.style.height = '20px';
-        ring.style.width = '52px';
-        ring.style.height = '52px';
-    });
-    el.addEventListener('mouseleave', () => {
-        cursor.style.width = '12px';
-        cursor.style.height = '12px';
-        ring.style.width = '36px';
-        ring.style.height = '36px';
-    });
-});
+/* ============================================================
+   PROJECTS PAGE
+   Standalone from main.js — this page only needs smooth scroll,
+   the cursor, the mobile menu, reveals and the category filter.
+   ============================================================ */
 
-// Navbar
-window.addEventListener('scroll', () => {
-    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 40);
-}, {
-    passive: true
-});
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-// Reveal
-const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-        if (e.isIntersecting) {
-            e.target.classList.add('visible');
-            obs.unobserve(e.target);
-        }
-    });
-}, {
-    threshold: 0.08
-});
-document.querySelectorAll('.reveal').forEach((el, i) => {
-    el.dataset.delay = (i % 3) * 80;
-    obs.observe(el);
-});
+/* ── Smooth scroll ─────────────────────────────────────────── */
+(function initSmoothScroll() {
+    if (prefersReducedMotion || typeof Lenis === 'undefined') return;
 
-// Tilt cards
-document.querySelectorAll('.tilt-card').forEach(card => {
-    const link = card.querySelector('.project-link');
-    card.addEventListener('mousemove', e => {
-        const r = card.getBoundingClientRect();
-        const rotX = ((e.clientY - r.top - r.height / 2) / (r.height / 2)) * -8;
-        const rotY = ((e.clientX - r.left - r.width / 2) / (r.width / 2)) * 8;
-        card.style.transform = `perspective(800px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateZ(4px)`;
+    const lenis = new Lenis({
+        lerp: 0.1,
+        smoothWheel: true
     });
-    card.addEventListener('mouseleave', () => {
-        card.style.transition = 'transform 0.4s ease';
-        card.style.transform = 'perspective(800px) rotateX(0) rotateY(0) translateZ(0)';
-        setTimeout(() => card.style.transition = '', 400);
-    });
-    if (link) {
-        link.addEventListener('mouseenter', () => {
-            card.style.transition = 'transform 0.25s ease';
-            card.style.transform = 'perspective(800px) translateZ(8px)';
-        });
-        link.addEventListener('mouseleave', () => {
-            card.style.transition = '';
-        });
+    window.lenis = lenis;
+
+    function raf(t) {
+        lenis.raf(t);
+        requestAnimationFrame(raf);
     }
-});
+    requestAnimationFrame(raf);
+})();
 
-// Filter
-const filterBtns = document.querySelectorAll('.filter-btn');
-const cards = document.querySelectorAll('#projectsGrid .project-card');
-const countEl = document.getElementById('visibleCount');
+/* ── Custom cursor ─────────────────────────────────────────── */
+(function initCursor() {
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursorRing');
+    if (!cursor || !ring) return;
 
-filterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-        filterBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        const f = btn.dataset.filter;
-        let count = 0;
-        cards.forEach(card => {
-            const show = f === 'all' || (card.dataset.category || '').includes(f);
-            card.style.opacity = show ? '1' : '0';
-            card.style.transform = show ? '' : 'scale(0.96)';
-            card.style.pointerEvents = show ? '' : 'none';
-            card.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
-            if (show) count++;
-        });
-        countEl.textContent = count;
+    if (window.matchMedia('(hover: none) and (pointer: coarse)').matches) {
+        cursor.style.display = 'none';
+        ring.style.display = 'none';
+        return;
+    }
+
+    document.addEventListener('mousemove', e => {
+        const t = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
+        cursor.style.transform = t;
+        ring.style.transform = t;
+    }, {
+        passive: true
     });
-});
+
+    document.querySelectorAll('a, button').forEach(el => {
+        el.addEventListener('mouseenter', () => ring.classList.add('is-active'));
+        el.addEventListener('mouseleave', () => ring.classList.remove('is-active'));
+    });
+})();
+
+/* ── Mobile menu ───────────────────────────────────────────── */
+(function initMobileMenu() {
+    const toggle = document.getElementById('navToggle');
+    const menu = document.getElementById('mobileMenu');
+    const closeBtn = document.getElementById('mobileMenuClose');
+    if (!toggle || !menu) return;
+
+    function close() {
+        toggle.classList.remove('open');
+        menu.classList.remove('open');
+        document.body.classList.remove('menu-open');
+    }
+
+    toggle.addEventListener('click', () => {
+        const isOpen = menu.classList.toggle('open');
+        toggle.classList.toggle('open', isOpen);
+        document.body.classList.toggle('menu-open', isOpen);
+    });
+
+    if (closeBtn) closeBtn.addEventListener('click', close);
+    menu.querySelectorAll('a').forEach(a => a.addEventListener('click', close));
+})();
+
+/* ── Split titles ──────────────────────────────────────────── */
+(function initSplitTitles() {
+    const titles = document.querySelectorAll('.split-title');
+    if (!titles.length) return;
+
+    titles.forEach(el => {
+        const words = el.textContent.trim().split(/\s+/);
+        let html = '';
+        let idx = 0;
+
+        words.forEach((word, w) => {
+            html += '<span class="word">';
+            for (const ch of word) {
+                html += `<span class="char" style="--i:${idx}">${ch}</span>`;
+                idx++;
+            }
+            html += '</span>';
+            // A plain space, not an inline-block, so a wrapped line has no indent
+            if (w < words.length - 1) html += ' ';
+        });
+
+        el.innerHTML = html;
+    });
+
+    const obs = new IntersectionObserver(entries => {
+        entries.forEach(e => e.target.classList.toggle('in-view', e.isIntersecting));
+    }, {
+        threshold: 0.2
+    });
+
+    titles.forEach(el => obs.observe(el));
+})();
+
+/* ── Scroll reveal ─────────────────────────────────────────── */
+(function initReveal() {
+    const obs = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (!e.isIntersecting) return;
+            setTimeout(() => e.target.classList.add('visible'), e.target.dataset.delay || 0);
+            obs.unobserve(e.target);
+        });
+    }, {
+        threshold: 0.08
+    });
+
+    document.querySelectorAll('.reveal').forEach((el, i) => {
+        el.dataset.delay = (i % 3) * 80;
+        obs.observe(el);
+    });
+})();
+
+/* ── Category filter ───────────────────────────────────────── */
+(function initFilter() {
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const cards = document.querySelectorAll('#projectsGrid .project-card');
+    const countEl = document.getElementById('visibleCount');
+    if (!filterBtns.length || !cards.length) return;
+
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            filterBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            const filter = btn.dataset.filter;
+            let count = 0;
+
+            cards.forEach(card => {
+                const show = filter === 'all' || (card.dataset.category || '').includes(filter);
+                // Hidden cards leave the grid so the remaining ones reflow tightly
+                card.hidden = !show;
+                if (show) count++;
+            });
+
+            if (countEl) countEl.textContent = count;
+        });
+    });
+})();
