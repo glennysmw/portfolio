@@ -417,3 +417,109 @@ html.js .reveal.visible {
         transform: none;
     }
 }
+
+/* ============================================================
+   LOADER
+   Onyx field, hairline progress rule, one ember dot at the head.
+   ============================================================ */
+#loader {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: stretch;
+    padding: var(--space-48);
+    background: var(--color-onyx);
+    transition: opacity var(--dur-reveal) var(--ease-in),
+        transform var(--dur-reveal) var(--ease-in);
+}
+
+html.js #loader {
+    display: flex;
+}
+
+#loader.fade-out {
+    opacity: 0;
+    transform: translateY(-20px);
+    pointer-events: none;
+}
+
+.loader-logo {
+    margin: auto;
+    animation: loaderLogoPulse 1.8s var(--ease-in) infinite;
+}
+
+.loader-logo img {
+    height: clamp(120px, 18vw, 220px);
+    width: auto;
+    /* The source mark is red neon — desaturate it into the monochrome system */
+    filter: grayscale(1) brightness(1.75);
+}
+
+@keyframes loaderLogoPulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.45;
+    }
+}
+
+.loader-bottom {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+}
+
+.loader-bar-track {
+    position: relative;
+    width: 100%;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.loader-bar-fill {
+    position: relative;
+    height: 1px;
+    width: 0%;
+    background: var(--color-pure-white);
+    transition: width 0.05s linear;
+}
+
+/* The only orange on the loader — a 6px ember riding the fill head */
+.loader-bar-dot {
+    position: absolute;
+    right: -3px;
+    top: 50%;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-ember-orange);
+    transform: translateY(-50%);
+}
+
+.loader-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.loader-text,
+.loader-pct {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: var(--text-micro);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-ash);
+    transition: color var(--dur-micro) var(--ease-in);
+}
+
+#loader.welcome .loader-text {
+    color: var(--color-pure-white);
+}

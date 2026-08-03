@@ -12,7 +12,7 @@ window.scrollTo(0, 0);
   const loaderPct = document.getElementById('loaderPct');
   const loaderTxt = document.getElementById('loaderText');
 
-  const DURATION = 2600; // ms for bar to fill
+  const DURATION = 1400; // ms for bar to fill — whole loader stays under 3s
   const start = Date.now();
 
   function easeInOut(t) {
@@ -37,11 +37,11 @@ window.scrollTo(0, 0);
       setTimeout(() => {
         loaderTxt.textContent = 'WELCOME';
         loader.classList.add('welcome');
-      }, 250);
+      }, 200);
 
       setTimeout(() => {
         loader.classList.add('fade-out');
-      }, 1000);
+      }, 700);
 
       setTimeout(() => {
         loader.style.display = 'none';
@@ -51,7 +51,7 @@ window.scrollTo(0, 0);
           behavior: 'instant'
         });
         initPostLoad();
-      }, 1750);
+      }, 1250);
     }
   }
 
