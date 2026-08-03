@@ -566,3 +566,241 @@ html.js #loader {
 body.at-hero .cursor {
     background: var(--color-pure-white);
 }
+
+/* ============================================================
+   NAV — floating pill row, no bar, nothing filled
+   ============================================================ */
+#navbar {
+    position: fixed;
+    top: var(--space-24);
+    left: var(--space-24);
+    right: var(--space-24);
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-12);
+}
+
+.nav-logo {
+    display: flex;
+    align-items: center;
+}
+
+.nav-logo img {
+    height: 32px;
+    width: auto;
+    /* Source mark is red neon — pinned to graphite on light, white on dark */
+    filter: grayscale(1) brightness(0.42);
+    transition: filter var(--dur-micro) var(--ease-in);
+}
+
+body.at-hero .nav-logo img {
+    filter: grayscale(1) brightness(1.75);
+}
+
+.nav-links {
+    display: flex;
+    gap: var(--space-6);
+    list-style: none;
+}
+
+.nav-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-6);
+    padding: 7px 14px;
+    border: 1px solid rgba(60, 58, 62, 0.15);
+    border-radius: var(--radius-nav);
+    background: transparent;
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: var(--text-caption);
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    color: var(--color-graphite);
+    transition: background var(--dur-micro) var(--ease-in),
+        color var(--dur-micro) var(--ease-in),
+        border-color var(--dur-micro) var(--ease-in);
+}
+
+.nav-links a span {
+    font-size: var(--text-micro);
+    line-height: 1;
+}
+
+.nav-links a:hover {
+    background: rgba(60, 58, 62, 0.06);
+}
+
+/* Over the dark hero the pills invert */
+body.at-hero .nav-links a {
+    color: var(--color-pure-white);
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+body.at-hero .nav-links a:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+/* ============================================================
+   MOBILE NAV — hamburger + fullscreen onyx overlay
+   ============================================================ */
+.nav-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 40px;
+    height: 40px;
+    padding: 0 9px;
+    background: none;
+    border: 1px solid rgba(60, 58, 62, 0.15);
+    border-radius: var(--radius-nav);
+    z-index: 1002;
+}
+
+.nav-toggle span {
+    display: block;
+    width: 100%;
+    height: 1px;
+    background: var(--color-graphite);
+    transition: transform var(--dur-micro) var(--ease-in),
+        opacity var(--dur-micro) var(--ease-in);
+}
+
+body.at-hero .nav-toggle {
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+body.at-hero .nav-toggle span {
+    background: var(--color-pure-white);
+}
+
+.nav-toggle.open span {
+    background: var(--color-pure-white);
+}
+
+.nav-toggle.open span:nth-child(1) {
+    transform: translateY(6px) rotate(45deg);
+}
+
+.nav-toggle.open span:nth-child(2) {
+    opacity: 0;
+}
+
+.nav-toggle.open span:nth-child(3) {
+    transform: translateY(-6px) rotate(-45deg);
+}
+
+.mobile-menu {
+    position: fixed;
+    inset: 0;
+    z-index: 1001;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: var(--space-6);
+    padding: var(--space-120) var(--space-48);
+    background: var(--color-onyx);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-20px);
+    transition: opacity var(--dur-component) var(--ease-in),
+        transform var(--dur-component) var(--ease-in);
+}
+
+.mobile-menu.open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+.mobile-menu a {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(56px, 16vw, 96px);
+    line-height: 0.9;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    color: var(--color-pure-white);
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity var(--dur-component) var(--ease-in),
+        transform var(--dur-component) var(--ease-in),
+        color var(--dur-micro) var(--ease-in);
+}
+
+.mobile-menu.open a {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* 60ms stagger on entrance */
+.mobile-menu.open a:nth-child(2) {
+    transition-delay: 0.06s;
+}
+
+.mobile-menu.open a:nth-child(3) {
+    transition-delay: 0.12s;
+}
+
+.mobile-menu.open a:nth-child(4) {
+    transition-delay: 0.18s;
+}
+
+.mobile-menu.open a:nth-child(5) {
+    transition-delay: 0.24s;
+}
+
+.mobile-menu.open a:nth-child(6) {
+    transition-delay: 0.3s;
+}
+
+.mobile-menu a:hover {
+    color: var(--color-ash);
+}
+
+.mobile-menu-resume {
+    font-family: var(--font-mono) !important;
+    font-size: var(--text-caption) !important;
+    letter-spacing: 0.1em !important;
+    margin-top: var(--space-24);
+}
+
+.mobile-menu-close {
+    position: absolute;
+    top: var(--space-24);
+    right: var(--space-24);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-6);
+    padding: 7px 14px;
+    background: none;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: var(--radius-nav);
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: var(--text-caption);
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    color: var(--color-pure-white);
+    transition: background var(--dur-micro) var(--ease-in);
+}
+
+.mobile-menu-close:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+@media (max-width: 900px) {
+    .nav-links {
+        display: none;
+    }
+
+    .nav-toggle {
+        display: flex;
+    }
+}

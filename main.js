@@ -137,9 +137,21 @@ function initCursor() {
    ============================================================ */
 function initNavbar() {
   const nav = document.getElementById('navbar');
-  window.addEventListener('scroll', () => {
-    nav.classList.toggle('scrolled', window.scrollY > 40);
-  }, {
+  if (!nav) return;
+
+  const hero = document.getElementById('hero');
+
+  function sync() {
+    const scrolled = window.scrollY > 40;
+    nav.classList.toggle('scrolled', scrolled);
+
+    // Over the onyx hero the nav, logo and cursor all invert
+    const overHero = hero ? window.scrollY < hero.offsetHeight - 80 : false;
+    document.body.classList.toggle('at-hero', overHero);
+  }
+
+  sync();
+  window.addEventListener('scroll', sync, {
     passive: true
   });
 }
