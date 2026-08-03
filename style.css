@@ -913,3 +913,57 @@ body.at-hero .nav-toggle span {
         display: none;
     }
 }
+
+/* ============================================================
+   MARQUEE — scroll-linked kinetic typography
+   ============================================================ */
+.marquee-section {
+    background: var(--color-fog);
+    padding: var(--space-120) 0;
+    overflow: hidden;
+}
+
+.marquee-row {
+    overflow: hidden;
+}
+
+.marquee-row+.marquee-row {
+    margin-top: var(--space-12);
+}
+
+.marquee-track {
+    display: flex;
+    align-items: center;
+    width: max-content;
+    will-change: transform;
+}
+
+.marquee-term {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(72px, 10vw, 160px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: var(--color-pure-white);
+    -webkit-text-stroke: 1px var(--color-silver-mist);
+    white-space: nowrap;
+}
+
+/* One of the few valid orange usages — a single small character */
+.marquee-sep {
+    color: var(--color-ember-orange);
+    font-size: 24px;
+    line-height: 1;
+    margin: 0 var(--space-48);
+}
+
+@media (max-width: 900px) {
+    .marquee-section {
+        padding: var(--space-72) 0;
+    }
+
+    .marquee-sep {
+        margin: 0 var(--space-24);
+    }
+}

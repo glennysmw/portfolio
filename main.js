@@ -72,6 +72,7 @@ function initPostLoad() {
   initSplitTitles();
   initReveal();
   initHero();
+  initScrollMarquee();
   initCounters();
   initTiltCards();
   initMagnetic();
@@ -125,6 +126,67 @@ function initHero() {
     gsap.from(ctas, { ...base, y: 20, opacity: 0, duration: 0.5, delay: 0.7, stagger: 0.1 });
   }
   if (scroll) gsap.from(scroll, { ...base, opacity: 0, duration: 0.6, delay: 1 });
+}
+
+/* ============================================================
+   SCROLL-LINKED MARQUEE
+   Two typography rows drifting in opposite directions, driven by
+   scroll position rather than a timed loop.
+   ============================================================ */
+function initScrollMarquee() {
+  const rows = Array.from(document.querySelectorAll('.marquee-row'));
+  if (!rows.length) return;
+
+  const tracks = rows.map(row => {
+    const track = row.querySelector('.marquee-track');
+    if (!track) return null;
+
+    // Triple the content so the row can wrap seamlessly in either direction
+    const original = track.innerHTML;
+    track.innerHTML = original + original + original;
+
+    return {
+      el: track,
+      dir: row.classList.contains('marquee-row--left') ? -1 : 1,
+      speed: parseFloat(row.dataset.speed) || 0.3,
+      seg: 0
+    };
+  }).filter(Boolean);
+
+  function measure() {
+    tracks.forEach(t => {
+      t.seg = t.el.scrollWidth / 3;
+    });
+    render();
+  }
+
+  function render() {
+    const y = window.scrollY;
+    tracks.forEach(t => {
+      if (!t.seg) return;
+      // Keep the middle repetition on screen at every scroll position
+      let x = (t.dir * y * t.speed) % t.seg;
+      if (x > 0) x -= t.seg;
+      t.el.style.transform = `translate3d(${x}px, 0, 0)`;
+    });
+  }
+
+  measure();
+  window.addEventListener('resize', measure);
+
+  if (prefersReducedMotion) return;
+
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      render();
+      ticking = false;
+    });
+  }, {
+    passive: true
+  });
 }
 
 /* ============================================================
