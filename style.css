@@ -1261,3 +1261,174 @@ html:not(.js) .char-reveal .char {
         aspect-ratio: 16 / 9;
     }
 }
+
+/* ============================================================
+   SKILLS — pill tabs + hairline bars
+   ============================================================ */
+#skills {
+    position: relative;
+    overflow: hidden;
+    background: var(--color-fog);
+    padding: var(--space-120) var(--gutter);
+}
+
+#skills .ghost-title {
+    color: var(--color-pure-white);
+}
+
+.skills-header {
+    position: relative;
+    z-index: 1;
+    margin-bottom: var(--space-72);
+}
+
+.skills-layout {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-60);
+}
+
+.skills-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-6);
+}
+
+.skill-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-6);
+    padding: 7px 14px;
+    background: transparent;
+    border: 1px solid rgba(60, 58, 62, 0.15);
+    border-radius: var(--radius-nav);
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: var(--text-caption);
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    color: var(--color-graphite);
+    transition: background var(--dur-micro) var(--ease-in),
+        color var(--dur-micro) var(--ease-in),
+        border-color var(--dur-micro) var(--ease-in);
+}
+
+.skill-tab:hover {
+    background: rgba(60, 58, 62, 0.06);
+}
+
+.skill-tab.active {
+    background: var(--color-onyx);
+    border-color: var(--color-onyx);
+    color: var(--color-pure-white);
+}
+
+.skill-tab.active::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-ember-orange);
+}
+
+.skill-panel {
+    display: none;
+}
+
+.skill-panel.active {
+    display: block;
+}
+
+.skill-bars {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-24);
+}
+
+/* One line per skill: icon + name ──────────── percentage */
+.skill-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-24);
+    transition: opacity var(--dur-component) var(--ease-in);
+}
+
+/* Lets .skill-name and .skill-pct sit directly on the row's flex line */
+.skill-meta {
+    display: contents;
+}
+
+.skill-name {
+    order: 1;
+    display: flex;
+    align-items: center;
+    gap: var(--space-12);
+    flex-shrink: 0;
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: var(--text-caption);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    color: var(--color-graphite);
+}
+
+.bar-track {
+    order: 2;
+    flex: 1;
+    height: 1px;
+    background: var(--color-silver-mist);
+}
+
+.bar-fill {
+    height: 1px;
+    width: 0%;
+    background: var(--color-graphite);
+    transition: width 1.2s var(--ease-in);
+}
+
+.skill-pct {
+    order: 3;
+    flex-shrink: 0;
+    min-width: 4ch;
+    text-align: right;
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: var(--text-micro);
+    color: var(--color-stone);
+}
+
+/* Icons are desaturated into the monochrome system */
+.skill-icon {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    object-fit: contain;
+    filter: grayscale(1);
+    opacity: 0.85;
+}
+
+.skill-icon-svg {
+    color: var(--color-graphite);
+}
+
+/* Quiet the rest of the list while one row is hovered */
+.skill-bars:has(.skill-row:hover) .skill-row:not(:hover) {
+    opacity: 0.35;
+}
+
+@media (max-width: 900px) {
+    #skills {
+        padding: var(--space-72) var(--gutter);
+    }
+
+    .skill-row {
+        gap: var(--space-12);
+    }
+
+    .skill-name {
+        font-size: var(--text-micro);
+    }
+}
