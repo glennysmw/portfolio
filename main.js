@@ -75,6 +75,7 @@ function initPostLoad() {
   initScrollMarquee();
   initCharReveal();
   initCounters();
+  initStickyProjects();
   initTiltCards();
   initMagnetic();
   initSkillTabs();
@@ -553,6 +554,34 @@ function initTiltCards() {
         card.style.transition = '';
       });
     }
+  });
+}
+
+/* ============================================================
+   STICKY PROJECT STACK
+   Each card pins under the nav and scales down as the next one
+   slides over it, so the set reads as a physical stack.
+   ============================================================ */
+function initStickyProjects() {
+  const cards = document.querySelectorAll('.sticky-stack .project-card');
+  if (!cards.length || !hasGSAP || prefersReducedMotion) return;
+
+  // Below 900px the cards flow normally, so there is nothing to scale
+  if (window.matchMedia('(max-width: 900px)').matches) return;
+
+  gsap.utils.toArray('.sticky-stack .project-card').forEach((card, i, all) => {
+    const targetScale = 1 - (all.length - 1 - i) * 0.03;
+
+    gsap.to(card, {
+      scale: targetScale,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: card,
+        start: 'top 96px',
+        end: '+=100%',
+        scrub: true
+      }
+    });
   });
 }
 

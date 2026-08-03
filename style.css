@@ -1087,3 +1087,177 @@ html:not(.js) .char-reveal .char {
         border-left: 0;
     }
 }
+
+/* ============================================================
+   PROJECTS — sticky stacking cards
+   ============================================================ */
+#projects {
+    background: var(--color-paper);
+    padding: var(--space-120) var(--gutter);
+}
+
+.projects-header {
+    margin-bottom: var(--space-72);
+}
+
+.sticky-stack {
+    position: relative;
+}
+
+.project-card {
+    position: sticky;
+    top: var(--space-96);
+    min-height: calc(100vh - var(--space-96));
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-24);
+    background: var(--color-pure-white);
+    border: 1px solid var(--color-silver-mist);
+    border-radius: var(--radius-cards);
+    padding: var(--space-48);
+    transform-origin: top center;
+    will-change: transform;
+}
+
+.project-body {
+    display: grid;
+    grid-template-columns: minmax(140px, 200px) 1fr;
+    gap: var(--space-48);
+    align-items: start;
+}
+
+.project-num {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(80px, 10vw, 140px);
+    line-height: 0.8;
+    letter-spacing: -0.03em;
+    color: var(--color-graphite);
+}
+
+.project-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-18);
+    max-width: 720px;
+}
+
+.project-tag {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: var(--text-micro);
+    line-height: 1.6;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    background: var(--color-onyx);
+    color: var(--color-pure-white);
+    padding: 0 var(--space-6);
+}
+
+.project-title {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(36px, 4.5vw, 60px);
+    line-height: 0.92;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    color: var(--color-graphite);
+}
+
+.project-desc {
+    font-size: var(--text-body);
+    line-height: 1.3;
+    color: var(--color-stone);
+}
+
+.project-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-6);
+}
+
+.project-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-12);
+    border: 2px solid var(--color-graphite);
+    border-radius: var(--radius-buttons);
+    padding: 10px 22px;
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: var(--text-caption);
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-graphite);
+    transition: background var(--dur-micro) var(--ease-in),
+        color var(--dur-micro) var(--ease-in);
+}
+
+.project-link:hover {
+    background: var(--color-graphite);
+    color: var(--color-pure-white);
+}
+
+.project-media {
+    flex: 1;
+    min-height: 220px;
+    overflow: hidden;
+    background: var(--color-fog);
+}
+
+.project-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--radius-cards);
+}
+
+/* Projects without a cover still get a full card — never skipped */
+.project-media--empty {
+    display: flex;
+    align-items: flex-end;
+    padding: var(--space-24);
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: var(--text-micro);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-stone);
+}
+
+.projects-cta {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--space-96);
+}
+
+@media (max-width: 900px) {
+    #projects {
+        padding: var(--space-72) var(--gutter);
+    }
+
+    /* Stacking is a desktop conceit — cards simply flow on small screens */
+    .project-card {
+        position: static;
+        min-height: 0;
+        gap: var(--space-24);
+        padding: var(--space-24);
+        transform: none !important;
+    }
+
+    .project-card+.project-card {
+        margin-top: var(--space-24);
+    }
+
+    .project-body {
+        grid-template-columns: 1fr;
+        gap: var(--space-18);
+    }
+
+    .project-media {
+        min-height: 0;
+        aspect-ratio: 16 / 9;
+    }
+}
