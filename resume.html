@@ -20,13 +20,14 @@
     <div class="cursor" id="cursor"></div>
     <div class="cursor-ring" id="cursorRing"></div>
 
-    <nav id="navbar" class="scrolled">
-        <a href="index.html" class="nav-logo"><img src="Cover_Images/GlennSoe_LOGO.png" alt="Glenn Soe Logo"></a>
+    <nav id="navbar">
+        <a href="index.html" class="nav-logo"><img src="Cover_Images/GlennSoe_LOGO.png" alt="Glenn Soe Logo"
+                width="1536" height="1024"></a>
         <ul class="nav-links">
-            <li><a href="index.html#about">About</a></li>
-            <li><a href="index.html#projects">Projects</a></li>
-            <li><a href="index.html#skills">Skills</a></li>
-            <li><a href="index.html#contact">Contact</a></li>
+            <li><a href="index.html#about"><span aria-hidden="true">•</span>About</a></li>
+            <li><a href="index.html#projects"><span aria-hidden="true">•</span>Projects</a></li>
+            <li><a href="index.html#skills"><span aria-hidden="true">•</span>Skills</a></li>
+            <li><a href="index.html#contact"><span aria-hidden="true">•</span>Contact</a></li>
         </ul>
         <button class="nav-toggle" id="navToggle" aria-label="Open menu">
             <span></span><span></span><span></span>
@@ -35,7 +36,8 @@
 
     <!-- MOBILE MENU -->
     <div class="mobile-menu" id="mobileMenu">
-        <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close menu">&times;</button>
+        <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close menu"><span
+                class="ember-dot"></span> Close</button>
         <a href="index.html#about">About</a>
         <a href="index.html#projects">Projects</a>
         <a href="index.html#skills">Skills</a>
@@ -46,15 +48,17 @@
     <section id="resume-page">
 
         <div class="resume-topbar">
-            <a href="index.html" class="back-link">← Back to Home</a>
+            <a href="index.html" class="back-link"><span aria-hidden="true">←</span> Back to Home</a>
             <div class="resume-actions">
-                <button class="resume-btn" onclick="window.print()">↓ Download / Print</button>
-                <a href="index.html#contact" class="resume-btn">Contact Me ↗</a>
+                <button class="resume-btn" onclick="window.print()"><span aria-hidden="true">↓</span> Download /
+                    Print</button>
+                <a href="index.html#contact" class="resume-btn">Contact Me <span aria-hidden="true">↗</span></a>
             </div>
         </div>
 
         <header class="resume-header">
-            <h1>Glenn <span>Soe</span></h1>
+            <span class="section-num">// Resume</span>
+            <h1>Glenn Soe</h1>
             <div class="resume-role">// Software Engineer · Full-Stack Developer</div>
             <div class="resume-contact">
                 <a href="mailto:glennsoemw@gmail.com">glennsoemw@gmail.com</a>
@@ -226,11 +230,24 @@
     </section>
 
     <footer>
-        <p>© 2026 <span>Glenn Soe</span>. Designed &amp; built by me.</p>
-        <p><a href="index.html" style="color:var(--muted);text-decoration:none;transition:color 0.2s"
-                onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--muted)'">← Back to
-                Portfolio</a></p>
+        <p class="footer-status"><span class="ember-dot ember-dot--pulse"></span>Open to work</p>
+        <p class="footer-center">© 2026 Glenn Soe. Designed &amp; built by me.</p>
+        <p class="footer-right"><a href="index.html">← Back to Portfolio</a></p>
     </footer>
+
+    <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+
+    <script>
+        // Smooth scroll — matched to the other pages
+        (function () {
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+            if (typeof Lenis === 'undefined') return;
+            var lenis = new Lenis({ lerp: 0.1, smoothWheel: true });
+            window.lenis = lenis;
+            function raf(t) { lenis.raf(t); requestAnimationFrame(raf); }
+            requestAnimationFrame(raf);
+        })();
+    </script>
 
     <script>
         // Cursor (desktop only)
@@ -238,30 +255,20 @@
             const isTouch = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
             const cursor = document.getElementById('cursor');
             const ring = document.getElementById('cursorRing');
+            if (!cursor || !ring) return;
             if (isTouch) {
                 cursor.style.display = 'none';
                 ring.style.display = 'none';
                 return;
             }
             document.addEventListener('mousemove', e => {
-                cursor.style.left = e.clientX + 'px';
-                cursor.style.top = e.clientY + 'px';
-                ring.style.left = e.clientX + 'px';
-                ring.style.top = e.clientY + 'px';
-            });
-            document.querySelectorAll('a, button, .skill-tag').forEach(el => {
-                el.addEventListener('mouseenter', () => {
-                    cursor.style.width = '20px';
-                    cursor.style.height = '20px';
-                    ring.style.width = '52px';
-                    ring.style.height = '52px';
-                });
-                el.addEventListener('mouseleave', () => {
-                    cursor.style.width = '12px';
-                    cursor.style.height = '12px';
-                    ring.style.width = '36px';
-                    ring.style.height = '36px';
-                });
+                const t = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
+                cursor.style.transform = t;
+                ring.style.transform = t;
+            }, { passive: true });
+            document.querySelectorAll('a, button').forEach(el => {
+                el.addEventListener('mouseenter', () => ring.classList.add('is-active'));
+                el.addEventListener('mouseleave', () => ring.classList.remove('is-active'));
             });
         })();
     </script>
