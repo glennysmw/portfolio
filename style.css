@@ -869,6 +869,9 @@ body.at-hero .nav-toggle span {
 .hero-name {
     margin-top: auto;
     padding: 0 var(--gutter);
+    /* Reserve one line of the monument up front so the swap from the
+       fallback face to Bebas Neue does not shift everything below it */
+    min-height: calc(var(--text-display) * 0.74);
     font-family: var(--font-display);
     font-weight: 400;
     font-size: var(--text-display);
@@ -949,6 +952,9 @@ body.at-hero .nav-toggle span {
 
 .marquee-row {
     overflow: hidden;
+    /* Reserve the row height before the display face loads, so tripling
+       the track and swapping the font do not shift the page */
+    min-height: clamp(72px, 10vw, 160px);
 }
 
 .marquee-row+.marquee-row {
@@ -969,7 +975,8 @@ body.at-hero .nav-toggle span {
     line-height: 1;
     letter-spacing: -0.02em;
     text-transform: uppercase;
-    color: var(--color-pure-white);
+    /* Outline only — this strip is decorative texture, not reading matter */
+    color: transparent;
     -webkit-text-stroke: 1px var(--color-silver-mist);
     white-space: nowrap;
 }
@@ -1781,7 +1788,8 @@ footer p {
 .projects-page-grid .project-num {
     font-size: var(--text-heading-sm);
     line-height: 1;
-    color: var(--color-silver-mist);
+    /* Silver-mist reads 1.67:1 on white — stone keeps it quiet and legible */
+    color: var(--color-stone);
 }
 
 .projects-page-grid .project-title {
@@ -2197,4 +2205,57 @@ footer p {
     * {
         -webkit-text-stroke: 0 !important;
     }
+}
+
+/* ============================================================
+   SMALL-SCREEN TYPE + CHROME ADJUSTMENTS
+   ============================================================ */
+@media (max-width: 600px) {
+
+    /* 21px body copy is too loud on a 375px canvas */
+    .hero-sub,
+    .about-text,
+    .project-desc,
+    .contact-left p,
+    .projects-page-intro p,
+    .resume-summary,
+    .resume-item-sub {
+        font-size: var(--text-body-sm);
+    }
+
+    .resume-fab {
+        right: var(--space-12);
+        bottom: var(--space-12);
+        padding: 10px 16px;
+        font-size: var(--text-micro);
+    }
+
+    .nav-logo img {
+        height: 64px;
+    }
+
+    .section-title {
+        max-width: none;
+    }
+}
+
+/* ============================================================
+   CONTRAST CORRECTION
+   Stone reads 4.02:1 on paper — fine for large copy, short of AA
+   for the 12–14px mono metadata. Those labels move to graphite;
+   size and letter-spacing still keep them secondary.
+   ============================================================ */
+.section-num,
+.back-link,
+.page-count,
+.stat-label,
+.form-group label,
+.skill-pct,
+.project-media--empty,
+.resume-role,
+.resume-block h2,
+.resume-side-block h3,
+.resume-item-date,
+.resume-side-list .li-sub {
+    color: var(--color-graphite);
 }
