@@ -116,31 +116,19 @@ function initCursor() {
     return;
   }
 
-  let mx = 0,
-    my = 0;
-
+  // Only transform is animated — never left/top
   document.addEventListener('mousemove', e => {
-    mx = e.clientX;
-    my = e.clientY;
-    cursor.style.left = mx + 'px';
-    cursor.style.top = my + 'px';
-    ring.style.left = mx + 'px';
-    ring.style.top = my + 'px';
+    const t = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
+    cursor.style.transform = t;
+    ring.style.transform = t;
+  }, {
+    passive: true
   });
 
-  document.querySelectorAll('a, button, .project-card, .stat-card, .skill-tab').forEach(el => {
-    el.addEventListener('mouseenter', () => {
-      cursor.style.width = '20px';
-      cursor.style.height = '20px';
-      ring.style.width = '52px';
-      ring.style.height = '52px';
-    });
-    el.addEventListener('mouseleave', () => {
-      cursor.style.width = '12px';
-      cursor.style.height = '12px';
-      ring.style.width = '36px';
-      ring.style.height = '36px';
-    });
+  // The ember ring is the hover state; it is absent the rest of the time
+  document.querySelectorAll('a, button, input, textarea, .skill-tab').forEach(el => {
+    el.addEventListener('mouseenter', () => ring.classList.add('is-active'));
+    el.addEventListener('mouseleave', () => ring.classList.remove('is-active'));
   });
 }
 
