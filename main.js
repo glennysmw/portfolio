@@ -73,6 +73,7 @@ function initPostLoad() {
   initReveal();
   initHero();
   initScrollMarquee();
+  initCharReveal();
   initCounters();
   initTiltCards();
   initMagnetic();
@@ -92,6 +93,7 @@ function initSmoothScroll() {
     lerp: 0.1,
     smoothWheel: true
   });
+  window.lenis = lenis;
 
   function raf(t) {
     lenis.raf(t);
@@ -277,17 +279,21 @@ function initNavbar() {
    ============================================================ */
 function initSplitTitles() {
   document.querySelectorAll('.split-title').forEach(el => {
-    const text = el.textContent;
+    const words = el.textContent.trim().split(/\s+/);
     let html = '';
     let idx = 0;
-    for (let i = 0; i < text.length; i++) {
-      if (text[i] === ' ') {
-        html += '<span class="char-space"> </span>';
-      } else {
-        html += `<span class="char" style="--i:${idx}">${text[i]}</span>`;
+
+    words.forEach((word, w) => {
+      // Words are kept whole so a heading never breaks mid-word
+      html += '<span class="word">';
+      for (const ch of word) {
+        html += `<span class="char" style="--i:${idx}">${ch}</span>`;
         idx++;
       }
-    }
+      html += '</span>';
+      if (w < words.length - 1) html += '<span class="char-space"> </span>';
+    });
+
     el.innerHTML = html;
   });
 
@@ -305,6 +311,60 @@ function initSplitTitles() {
   });
 
   document.querySelectorAll('.split-title').forEach(el => obs.observe(el));
+}
+
+/* ============================================================
+   CHARACTER REVEAL
+   Lifts a paragraph from 20% to full opacity, one character at a
+   time, scrubbed against its own scroll range.
+   ============================================================ */
+function initCharReveal() {
+  const targets = document.querySelectorAll('.char-reveal');
+  if (!targets.length) return;
+
+  targets.forEach(el => {
+    splitTextNodes(el);
+
+    if (!hasGSAP || prefersReducedMotion) {
+      // No scrub available — show the paragraph outright
+      el.querySelectorAll('.char').forEach(c => (c.style.opacity = '1'));
+      return;
+    }
+
+    gsap.to(el.querySelectorAll('.char'), {
+      opacity: 1,
+      stagger: 0.02,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: el,
+        start: 'top 80%',
+        end: 'bottom 40%',
+        scrub: true
+      }
+    });
+  });
+}
+
+/* Wraps every character in a span while leaving the element tree
+   (and therefore the <strong> emphasis) intact. */
+function splitTextNodes(node) {
+  Array.from(node.childNodes).forEach(child => {
+    if (child.nodeType === Node.TEXT_NODE) {
+      const text = child.textContent;
+      if (!text.trim()) return;
+
+      const frag = document.createDocumentFragment();
+      for (const ch of text) {
+        const span = document.createElement('span');
+        span.className = ch === ' ' ? 'char char-space' : 'char';
+        span.textContent = ch;
+        frag.appendChild(span);
+      }
+      child.replaceWith(frag);
+    } else if (child.nodeType === Node.ELEMENT_NODE) {
+      splitTextNodes(child);
+    }
+  });
 }
 
 /* ============================================================

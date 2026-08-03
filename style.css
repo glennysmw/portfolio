@@ -203,6 +203,11 @@ textarea {
 }
 
 /* Split-title char stagger (initSplitTitles) */
+.split-title .word {
+    display: inline-block;
+    white-space: nowrap;
+}
+
 .split-title .char {
     display: inline-block;
     opacity: 0;
@@ -965,5 +970,120 @@ body.at-hero .nav-toggle span {
 
     .marquee-sep {
         margin: 0 var(--space-24);
+    }
+}
+
+/* ============================================================
+   ABOUT
+   ============================================================ */
+#about {
+    position: relative;
+    overflow: hidden;
+    background: var(--color-paper);
+    padding: var(--space-120) var(--gutter);
+}
+
+.about-inner {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-96);
+    align-items: start;
+}
+
+.about-text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-24);
+    max-width: 520px;
+    font-size: var(--text-body);
+    line-height: 1.35;
+    color: var(--color-stone);
+}
+
+/* Emphasis carries through colour, never weight */
+.about-text strong {
+    font-weight: 500;
+    color: var(--color-graphite);
+}
+
+/* Character reveal — base state, lifted by scrub as it passes */
+.char-reveal .char {
+    opacity: 0.2;
+}
+
+html:not(.js) .char-reveal .char {
+    opacity: 1;
+}
+
+/* Stats strip — hairline ruled row, not cards */
+.about-stats {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-top: 1px solid var(--color-silver-mist);
+    border-bottom: 1px solid var(--color-silver-mist);
+    padding: var(--space-48) 0;
+    margin-top: var(--space-96);
+}
+
+.stat-card {
+    padding: 0 var(--space-24);
+}
+
+.stat-card+.stat-card {
+    border-left: 1px solid var(--color-silver-mist);
+}
+
+.stat-num {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(56px, 7vw, 96px);
+    line-height: 0.86;
+    letter-spacing: -0.03em;
+    color: var(--color-graphite);
+}
+
+.stat-label {
+    margin-top: var(--space-12);
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: var(--text-micro);
+    line-height: 1.5;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-stone);
+}
+
+.internship-mo {
+    color: var(--color-ash);
+}
+
+@media (max-width: 1024px) {
+    .about-inner {
+        grid-template-columns: 1fr;
+        gap: var(--space-48);
+    }
+}
+
+@media (max-width: 900px) {
+    #about {
+        padding: var(--space-72) var(--gutter);
+    }
+
+    .about-stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-24) 0;
+        margin-top: var(--space-60);
+    }
+
+    .stat-card {
+        padding: 0 var(--space-12);
+    }
+
+    .stat-card:nth-child(odd) {
+        border-left: 0;
     }
 }
