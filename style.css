@@ -197,7 +197,7 @@ textarea {
     line-height: 0.74;
     letter-spacing: -0.03em;
     text-transform: uppercase;
-    color: var(--color-pure-white);
+    color: var(--color-silver-mist);
     pointer-events: none;
     user-select: none;
 }
@@ -838,8 +838,8 @@ body.at-hero .nav-toggle span {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    padding: var(--space-120) 0 var(--space-48);
+    justify-content: flex-start;
+    padding: var(--space-96) 0 var(--space-48);
     background: var(--color-onyx);
     color: var(--color-pure-white);
 }
@@ -867,7 +867,7 @@ body.at-hero .nav-toggle span {
 
 /* The monument — pinned to the bottom of the hero column */
 .hero-name {
-    margin-top: auto;
+    margin-top: clamp(var(--space-48), 12vh, 150px);
     padding: 0 var(--gutter);
     /* Reserve one line of the monument up front so the swap from the
        fallback face to Bebas Neue does not shift everything below it */
@@ -889,6 +889,7 @@ body.at-hero .nav-toggle span {
 .hero-foot {
     padding: 0 var(--gutter);
     margin-top: var(--space-48);
+    margin-bottom: auto;
     display: flex;
     flex-direction: column;
     gap: var(--space-24);
@@ -1133,14 +1134,14 @@ html:not(.js) .char-reveal .char {
 .sticky-stack .project-card {
     position: sticky;
     top: var(--space-96);
-    min-height: calc(100vh - var(--space-96));
+    min-height: 0;
     display: flex;
     flex-direction: column;
     gap: var(--space-24);
     background: var(--color-pure-white);
     border: 1px solid var(--color-silver-mist);
     border-radius: var(--radius-cards);
-    padding: var(--space-48);
+    padding: 36px;
     transform-origin: top center;
     will-change: transform;
 }
@@ -1227,8 +1228,7 @@ html:not(.js) .char-reveal .char {
 }
 
 .sticky-stack .project-media {
-    flex: 1;
-    min-height: 220px;
+    height: clamp(200px, 28vh, 360px);
 }
 
 .project-media {
@@ -1286,6 +1286,7 @@ html:not(.js) .char-reveal .char {
     }
 
     .sticky-stack .project-media {
+        height: auto;
         min-height: 0;
         aspect-ratio: 16 / 9;
     }
@@ -1302,7 +1303,7 @@ html:not(.js) .char-reveal .char {
 }
 
 #skills .ghost-title {
-    color: var(--color-pure-white);
+    color: var(--color-silver-mist);
 }
 
 .skills-header {
