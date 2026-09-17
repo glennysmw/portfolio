@@ -76,6 +76,7 @@ function initPostLoad() {
   initCharReveal();
   initCounters();
   initStickyProjects();
+  initAvatarEyes();
   initTiltCards();
   initMagnetic();
   initSkillTabs();
@@ -580,6 +581,44 @@ function initStickyProjects() {
         once: true
       }
     });
+  });
+}
+
+/* ============================================================
+   HERO AVATAR
+   Pupils translate toward the cursor while it is inside the hero;
+   the whole face parallaxes a touch for depth. Pointer devices only.
+   ============================================================ */
+function initAvatarEyes() {
+  const hero = document.getElementById('hero');
+  const avatar = document.querySelector('.hero-avatar');
+  const pupils = document.querySelector('.hero-avatar-pupils');
+  if (!hero || !avatar || !pupils) return;
+  if (window.matchMedia('(hover: none)').matches) return;
+
+  hero.addEventListener('mousemove', (e) => {
+    const box = pupils.getBoundingClientRect();
+    const cx = box.left + box.width / 2;
+    const cy = box.top + box.height / 2;
+    const dx = e.clientX - cx;
+    const dy = e.clientY - cy;
+    const dist = Math.hypot(dx, dy) || 1;
+
+    // Pupils: capped travel so they never leave the whites
+    const travel = box.width * 0.02;
+    const px = (dx / dist) * Math.min(travel, dist * 0.05);
+    const py = (dy / dist) * Math.min(travel, dist * 0.05);
+    pupils.style.transform = `translate(${px}px, ${py}px)`;
+
+    // Face: much subtler parallax lean
+    const fx = (dx / dist) * Math.min(box.width * 0.01, dist * 0.02);
+    const fy = (dy / dist) * Math.min(box.width * 0.01, dist * 0.02);
+    avatar.style.transform = `translateY(-50%) translate(${fx}px, ${fy}px)`;
+  }, { passive: true });
+
+  hero.addEventListener('mouseleave', () => {
+    pupils.style.transform = 'translate(0, 0)';
+    avatar.style.transform = 'translateY(-50%)';
   });
 }
 
