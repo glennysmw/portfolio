@@ -564,23 +564,20 @@ function initTiltCards() {
    slides over it, so the set reads as a physical stack.
    ============================================================ */
 function initStickyProjects() {
-  const cards = document.querySelectorAll('.sticky-stack .project-card');
+  const cards = gsap.utils ? gsap.utils.toArray('.sticky-stack .project-card') : [];
   if (!cards.length || !hasGSAP || prefersReducedMotion) return;
 
-  // Below 900px the cards flow normally, so there is nothing to scale
-  if (window.matchMedia('(max-width: 900px)').matches) return;
-
-  gsap.utils.toArray('.sticky-stack .project-card').forEach((card, i, all) => {
-    const targetScale = 1 - (all.length - 1 - i) * 0.03;
-
-    gsap.to(card, {
-      scale: targetScale,
-      ease: 'none',
+  // Grid cards fade and rise in, staggered by row as they scroll into view
+  cards.forEach((card) => {
+    gsap.from(card, {
+      y: 40,
+      opacity: 0,
+      duration: 0.7,
+      ease: 'expo.out',
       scrollTrigger: {
         trigger: card,
-        start: 'top 96px',
-        end: '+=100%',
-        scrub: true
+        start: 'top 88%',
+        once: true
       }
     });
   });

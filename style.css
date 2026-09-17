@@ -867,7 +867,7 @@ body.at-hero .nav-toggle span {
 
 /* The monument — pinned to the bottom of the hero column */
 .hero-name {
-    margin-top: clamp(var(--space-48), 12vh, 150px);
+    margin-top: auto;
     padding: 0 var(--gutter);
     /* Reserve one line of the monument up front so the swap from the
        fallback face to Bebas Neue does not shift everything below it */
@@ -1128,29 +1128,33 @@ html:not(.js) .char-reveal .char {
 }
 
 .sticky-stack {
-    position: relative;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-24);
 }
 
 .sticky-stack .project-card {
-    position: sticky;
-    top: var(--space-96);
-    min-height: 0;
     display: flex;
     flex-direction: column;
     gap: var(--space-24);
     background: var(--color-pure-white);
     border: 1px solid var(--color-silver-mist);
     border-radius: var(--radius-cards);
-    padding: 36px;
-    transform-origin: top center;
-    will-change: transform;
+    padding: 0 0 var(--space-24);
+    overflow: hidden;
+    transition: border-color var(--dur-micro) var(--ease-in);
+}
+
+.sticky-stack .project-card:hover {
+    border-color: var(--color-graphite);
 }
 
 .project-body {
-    display: grid;
-    grid-template-columns: minmax(140px, 200px) 1fr;
-    gap: var(--space-48);
-    align-items: start;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-18);
+    padding: 0 var(--space-24);
 }
 
 .project-num {
@@ -1160,6 +1164,12 @@ html:not(.js) .char-reveal .char {
     line-height: 0.8;
     letter-spacing: -0.03em;
     color: var(--color-graphite);
+}
+
+/* Grid cards use a smaller inline index than the old full-bleed layout */
+.sticky-stack .project-num {
+    font-size: clamp(40px, 3.4vw, 56px);
+    color: var(--color-silver-mist);
 }
 
 .project-meta {
@@ -1198,6 +1208,14 @@ html:not(.js) .char-reveal .char {
     color: var(--color-stone);
 }
 
+/* Keep grid cards tight and roughly uniform — full copy lives on projects.html */
+.sticky-stack .project-desc {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
 .project-stack {
     display: flex;
     flex-wrap: wrap;
@@ -1228,7 +1246,8 @@ html:not(.js) .char-reveal .char {
 }
 
 .sticky-stack .project-media {
-    height: clamp(200px, 28vh, 360px);
+    order: -1;
+    aspect-ratio: 16 / 9;
 }
 
 .project-media {
@@ -1267,28 +1286,9 @@ html:not(.js) .char-reveal .char {
         padding: var(--space-72) var(--gutter);
     }
 
-    /* Stacking is a desktop conceit — cards simply flow on small screens */
-    .sticky-stack .project-card {
-        position: static;
-        min-height: 0;
-        gap: var(--space-24);
-        padding: var(--space-24);
-        transform: none !important;
-    }
-
-    .sticky-stack .project-card+.project-card {
-        margin-top: var(--space-24);
-    }
-
-    .project-body {
+    /* One column on small screens */
+    .sticky-stack {
         grid-template-columns: 1fr;
-        gap: var(--space-18);
-    }
-
-    .sticky-stack .project-media {
-        height: auto;
-        min-height: 0;
-        aspect-ratio: 16 / 9;
     }
 }
 
