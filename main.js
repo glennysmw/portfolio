@@ -586,38 +586,32 @@ function initStickyProjects() {
 
 /* ============================================================
    HERO AVATAR
-   The whole face tilts in 3D toward the cursor (head-turn) with a
-   small parallax shift for depth. Pointer devices only.
+   Pupils translate toward the cursor while it is anywhere in the
+   hero, capped so they never leave the eye whites. Pointer only.
    ============================================================ */
 function initAvatarEyes() {
   const hero = document.getElementById('hero');
-  const img = document.querySelector('.hero-avatar-img');
-  if (!hero || !img) return;
+  const pupils = document.querySelector('.hero-avatar-pupils');
+  if (!hero || !pupils) return;
   if (window.matchMedia('(hover: none)').matches) return;
 
-  const MAX_ROT = 12;   // degrees of head turn
-  const MAX_SHIFT = 10; // px of parallax drift
-  const clamp = (v) => Math.max(-1, Math.min(1, v));
-
   hero.addEventListener('mousemove', (e) => {
-    const r = img.getBoundingClientRect();
-    const cx = r.left + r.width / 2;
-    const cy = r.top + r.height / 2;
-    // -1..1 relative to the avatar centre across half the viewport
-    const nx = clamp((e.clientX - cx) / (window.innerWidth * 0.5));
-    const ny = clamp((e.clientY - cy) / (window.innerHeight * 0.5));
+    const box = pupils.getBoundingClientRect();
+    const cx = box.left + box.width / 2;
+    const cy = box.top + box.height / 2;
+    const dx = e.clientX - cx;
+    const dy = e.clientY - cy;
+    const dist = Math.hypot(dx, dy) || 1;
 
-    const rotY = nx * MAX_ROT;    // turn left/right toward the cursor
-    const rotX = -ny * MAX_ROT;   // tip up/down toward the cursor
-    const shiftX = nx * MAX_SHIFT;
-    const shiftY = ny * MAX_SHIFT;
-
-    img.style.transform =
-      `translate(${shiftX}px, ${shiftY}px) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+    // Travel scales with the avatar size so pupils stay within the whites
+    const travel = box.width * 0.022;
+    const px = (dx / dist) * Math.min(travel, dist * 0.05);
+    const py = (dy / dist) * Math.min(travel, dist * 0.05);
+    pupils.style.transform = `translate(${px}px, ${py}px)`;
   }, { passive: true });
 
   hero.addEventListener('mouseleave', () => {
-    img.style.transform = 'translate(0, 0) rotateX(0deg) rotateY(0deg)';
+    pupils.style.transform = 'translate(0, 0)';
   });
 }
 
