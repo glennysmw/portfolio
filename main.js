@@ -586,39 +586,38 @@ function initStickyProjects() {
 
 /* ============================================================
    HERO AVATAR
-   Pupils translate toward the cursor while it is inside the hero;
-   the whole face parallaxes a touch for depth. Pointer devices only.
+   The whole face tilts in 3D toward the cursor (head-turn) with a
+   small parallax shift for depth. Pointer devices only.
    ============================================================ */
 function initAvatarEyes() {
   const hero = document.getElementById('hero');
-  const avatar = document.querySelector('.hero-avatar');
-  const pupils = document.querySelector('.hero-avatar-pupils');
-  if (!hero || !avatar || !pupils) return;
+  const img = document.querySelector('.hero-avatar-img');
+  if (!hero || !img) return;
   if (window.matchMedia('(hover: none)').matches) return;
 
+  const MAX_ROT = 12;   // degrees of head turn
+  const MAX_SHIFT = 10; // px of parallax drift
+  const clamp = (v) => Math.max(-1, Math.min(1, v));
+
   hero.addEventListener('mousemove', (e) => {
-    const box = pupils.getBoundingClientRect();
-    const cx = box.left + box.width / 2;
-    const cy = box.top + box.height / 2;
-    const dx = e.clientX - cx;
-    const dy = e.clientY - cy;
-    const dist = Math.hypot(dx, dy) || 1;
+    const r = img.getBoundingClientRect();
+    const cx = r.left + r.width / 2;
+    const cy = r.top + r.height / 2;
+    // -1..1 relative to the avatar centre across half the viewport
+    const nx = clamp((e.clientX - cx) / (window.innerWidth * 0.5));
+    const ny = clamp((e.clientY - cy) / (window.innerHeight * 0.5));
 
-    // Pupils: capped travel so they never leave the whites
-    const travel = box.width * 0.02;
-    const px = (dx / dist) * Math.min(travel, dist * 0.05);
-    const py = (dy / dist) * Math.min(travel, dist * 0.05);
-    pupils.style.transform = `translate(${px}px, ${py}px)`;
+    const rotY = nx * MAX_ROT;    // turn left/right toward the cursor
+    const rotX = -ny * MAX_ROT;   // tip up/down toward the cursor
+    const shiftX = nx * MAX_SHIFT;
+    const shiftY = ny * MAX_SHIFT;
 
-    // Face: much subtler parallax lean
-    const fx = (dx / dist) * Math.min(box.width * 0.01, dist * 0.02);
-    const fy = (dy / dist) * Math.min(box.width * 0.01, dist * 0.02);
-    avatar.style.transform = `translateY(-50%) translate(${fx}px, ${fy}px)`;
+    img.style.transform =
+      `translate(${shiftX}px, ${shiftY}px) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
   }, { passive: true });
 
   hero.addEventListener('mouseleave', () => {
-    pupils.style.transform = 'translate(0, 0)';
-    avatar.style.transform = 'translateY(-50%)';
+    img.style.transform = 'translate(0, 0) rotateX(0deg) rotateY(0deg)';
   });
 }
 

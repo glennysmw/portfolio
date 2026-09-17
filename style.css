@@ -931,23 +931,19 @@ body.at-hero .nav-toggle span {
     right: clamp(16px, 3.5vw, 80px);
     transform: translateY(-50%);
     width: clamp(300px, 30vw, 460px);
-    aspect-ratio: 1268 / 1241;
+    aspect-ratio: 1 / 1;
     z-index: 0;
     pointer-events: none;
-    transition: transform 0.3s var(--ease-out);
+    perspective: 900px;
     animation: avatarIn 0.9s var(--ease-out) 0.5s both;
 }
 
-.hero-avatar img {
-    position: absolute;
-    inset: 0;
+.hero-avatar-img {
+    display: block;
     width: 100%;
     height: 100%;
-    display: block;
-}
-
-.hero-avatar-pupils {
-    transition: transform 0.18s var(--ease-out);
+    transform-origin: center center;
+    transition: transform 0.25s var(--ease-out);
     will-change: transform;
 }
 
