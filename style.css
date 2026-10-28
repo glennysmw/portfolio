@@ -945,6 +945,14 @@ body.at-hero .nav-toggle span {
     display: block;
 }
 
+/* Pupils are clipped to the eye whites so they can never leave the sockets */
+.hero-avatar-eyes {
+    position: absolute;
+    inset: 0;
+    -webkit-mask: url("Cover_Images/avatar_eyemask.png") center / 100% 100% no-repeat;
+    mask: url("Cover_Images/avatar_eyemask.png") center / 100% 100% no-repeat;
+}
+
 .hero-avatar-pupils {
     transition: transform 0.16s var(--ease-out);
     will-change: transform;

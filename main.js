@@ -595,18 +595,24 @@ function initAvatarEyes() {
   if (!hero || !pupils) return;
   if (window.matchMedia('(hover: none)').matches) return;
 
+  // Measured on the 1254px source: the midpoint between the eyes, and how far
+  // each iris can travel before the socket edge (wide sideways, shallow vertically)
+  const SRC = 1254;
+  const EYES_X = 626 / SRC;
+  const EYES_Y = 566 / SRC;
+  const TRAVEL_X = 22 / SRC;
+  const TRAVEL_Y = 6 / SRC;
+
   hero.addEventListener('mousemove', (e) => {
     const box = pupils.getBoundingClientRect();
-    const cx = box.left + box.width / 2;
-    const cy = box.top + box.height / 2;
-    const dx = e.clientX - cx;
-    const dy = e.clientY - cy;
+    const dx = e.clientX - (box.left + box.width * EYES_X);
+    const dy = e.clientY - (box.top + box.height * EYES_Y);
     const dist = Math.hypot(dx, dy) || 1;
 
-    // Travel scales with the avatar size so pupils stay within the whites
-    const travel = box.width * 0.022;
-    const px = (dx / dist) * Math.min(travel, dist * 0.05);
-    const py = (dy / dist) * Math.min(travel, dist * 0.05);
+    // Ease in near the face so the gaze doesn't snap when the cursor is close
+    const reach = Math.min(1, dist / 300);
+    const px = (dx / dist) * box.width * TRAVEL_X * reach;
+    const py = (dy / dist) * box.width * TRAVEL_Y * reach;
     pupils.style.transform = `translate(${px}px, ${py}px)`;
   }, { passive: true });
 
