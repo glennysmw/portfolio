@@ -598,8 +598,8 @@ function initAvatarEyes() {
   // Measured on the 1254px source: the midpoint between the eyes, and how far
   // each iris can travel before the socket edge (wide sideways, shallow vertically)
   const SRC = 1254;
-  const EYES_X = 626 / SRC;
-  const EYES_Y = 566 / SRC;
+  const EYES_X = 627 / SRC;
+  const EYES_Y = 558 / SRC;
   const TRAVEL_X = 22 / SRC;
   const TRAVEL_Y = 6 / SRC;
 
